@@ -20,7 +20,7 @@ if [ ! -f /data/db/mysql/ibdata1 ]; then
     /usr/bin/mysqld_safe --defaults-file=/data/conf/my.cnf &
     sleep 10s
 
-    echo "GRANT ALL ON *.* TO ${DB_USERNAME}@'%' IDENTIFIED BY '${DB_PASSWORD}' WITH GRANT OPTION;GRANT ALL ON *.* TO ${DB_USERNAME}@'localhost' IDENTIFIED BY '${DB_PASSWORD}' WITH GRANT OPTION; CREATE DATABASE ${DB_DATABASE};  FLUSH PRIVILEGES;" | mysql -u root --password=""
+    echo "GRANT ALL ON *.* TO homestead@'%' IDENTIFIED BY 'secret' WITH GRANT OPTION;GRANT ALL ON *.* TO homestead@'localhost' IDENTIFIED BY 'secret' WITH GRANT OPTION; CREATE DATABASE homestead;  FLUSH PRIVILEGES;" | mysql -u root --password=""
 
     killall mysqld
     killall mysqld_safe
