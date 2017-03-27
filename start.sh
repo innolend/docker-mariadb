@@ -1,32 +1,19 @@
-#!/bin/sh
-mkdir -p /data/log/mysql
-mkdir -p /data/db/mysql/
-mkdir -p /data/conf
-mkdir -p /var/run/mysqld
+qladmin --silent --wait=30 ping
 
-chown -R mysql: /data /var/run/mysqld
+mysql -uroot -e "CREATE USER 'homestead'@'%' IDENTIFIED BY 'secret'"
+mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'homestead'@'%' WITH GRANT OPTION"
+mysql -uroot -e "FLUSH PRIVILEGES"
+mysql -uroot -e "CREATE SCHEMA innolend"
 
-if [ ! -f /data/conf/my.cnf ]; then
-    mv /etc/mysql/my.cnf  /data/conf/my.cnf
-fi
+echo "=> Done!"
 
-ln -sf /data/conf/my.cnf /etc/mysql/my.cnf
-chmod o-r /etc/mysql/my.cnf
+echo "========================================================================"
+echo "You can now connect to this MariaDB Server using:"
+echo ""
+echo "    mysql -uhomestead -psecret -h<host> -P<port>"
+echo ""
+echo "Please remember to change the above password as soon as possible!"
+echo "MariaDB user 'root' has no password but only allows local connections"
+echo "========================================================================"
 
-if [ ! -f /data/db/mysql/ibdata1 ]; then
-
-    mysql_install_db --user=mysql --datadir="/data/db/mysql"
-
-    /usr/bin/mysqld_safe --defaults-file=/data/conf/my.cnf &
-    sleep 10s
-
-    echo "GRANT ALL ON *.* TO homestead@'%' IDENTIFIED BY 'secret' WITH GRANT OPTION;GRANT ALL ON *.* TO homestead@'localhost' IDENTIFIED BY 'secret' WITH GRANT OPTION; CREATE DATABASE homestead;  FLUSH PRIVILEGES;" | mysql -u root --password=""
-
-    killall mysqld
-    killall mysqld_safe
-    sleep 10s
-    killall -9 mysqld
-    killall -9 mysqld_safe
-fi
-
-mysqld --user=mysql
+mysqladmin -uroot shutdown

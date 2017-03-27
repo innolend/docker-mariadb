@@ -1,17 +1,21 @@
-FROM alpine:3.4
+FROM alpine:edge
 
-RUN apk update && apk add mariadb mariadb-client && rm -f /var/cache/apk/*
-RUN mysql_install_db --user=mysql
-ENV TERM xterm
+RUN apk --update add \
+  mariadb \
+  mariadb-client
 
-#COPY my.cnf /etc/mysql/
-VOLUME /var/lib/mysql
-VOLUME /var/log/mysql
+# This.. sets up the users and whatnot?
+ADD start.sh /start.sh
+ADD run.sh /run.sh
+RUN chmod 775 *.sh
 
-ADD ./start.sh /start.sh
+ADD my.cnf /etc/mysql/my.cnf
 
-RUN chmod u+x /start.sh
+# Add VOLUMEs to allow backup of config and databases
+VOLUME  ["/etc/mysql", "/var/lib/mysql"]
 
-ENTRYPOINT ["mysqld_safe"]
+ENV TERM dumb
+
+CMD ["sh", "run.sh"]
 
 EXPOSE 3306
