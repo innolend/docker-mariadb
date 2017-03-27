@@ -8,6 +8,10 @@ COPY my.cnf /etc/mysql/
 VOLUME /var/lib/mysql
 VOLUME /var/log/mysql
 
+ADD ./start.sh /start.sh
+
+RUN chmod u+x /start.sh
+
 ENTRYPOINT ["mysqld_safe"]
 
 EXPOSE 3306
