@@ -1,5 +1,7 @@
 qladmin --silent --wait=30 ping
 
+mkdir /var/run/mysql
+chmod -R 777 /var/run/mysqld
 mysql -uroot -e "CREATE USER 'homestead'@'%' IDENTIFIED BY 'secret'"
 mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'homestead'@'%' WITH GRANT OPTION"
 mysql -uroot -e "FLUSH PRIVILEGES"
