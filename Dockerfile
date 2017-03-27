@@ -12,6 +12,6 @@ ADD ./start.sh /start.sh
 
 RUN chmod u+x /start.sh
 
-#ENTRYPOINT ["mysqld_safe"]
+ENTRYPOINT ["mysqld_safe"]
 
 EXPOSE 3306
