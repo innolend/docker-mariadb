@@ -39,6 +39,7 @@ EOF
 
     if [ "$DB_USERNAME" != "" ]; then
       echo "[i] Creating user: $DB_USERNAME with password $DB_PASSWORD"
+      echo "GRANT ALL ON \`$DB_DATABASE\`.`localhost` to '$DB_USERNAME'@'%' IDENTIFIED BY '$DB_PASSWORD';" >> $tfile
       echo "GRANT ALL ON \`$DB_DATABASE\`.* to '$DB_USERNAME'@'%' IDENTIFIED BY '$DB_PASSWORD';" >> $tfile
     fi
   fi
